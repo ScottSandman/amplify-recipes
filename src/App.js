@@ -3,7 +3,7 @@ import { API, graphqlOperation, Storage, Auth } from "aws-amplify";
 import { createRecipe } from "./graphql/mutations";
 import { getRecipe, listRecipes } from "./graphql/queries";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
-import { S3Text } from "aws-amplify-react";
+import { S3Text, S3Image } from "aws-amplify-react";
 
 import "./App.css";
 
@@ -21,13 +21,13 @@ const initialState = {
 //   .then((result) => console.log(result))
 //   .catch((err) => console.log(err));
 
-const S3ImageUpload = () => {
+const S3ImageUpload = ({ accessLevel }) => {
   const [image, setImage] = useState("");
 
   function onClick() {
     const file = image;
-    Storage.put(image.name, file, {
-      level: "private",
+    Storage.put("images/" + image.name, file, {
+      level: accessLevel,
       contentType: "image/png",
     })
       .then((result) => console.log(result))
@@ -52,11 +52,33 @@ function App() {
   const [formState, setFormState] = useState(initialState);
   const [recipesList, setRecipesList] = useState([]);
   const [textList, setTextList] = useState([]);
+  const [accessLevel, setAccessLevel] = useState("public");
+  const [imageList, setImageList] = useState([]);
 
   useEffect(() => {
     fetchRecipes();
-    console.log(Auth);
-  }, []);
+    Storage.list("", { level: accessLevel, contentType: "text/plain" })
+      .then((result) =>
+        setTextList(
+          result.filter((file) => {
+            if (!file.key.match(/.txt/) == false) return file;
+          })
+        )
+      )
+      .catch((err) => console.log(err));
+    Storage.list("images/", { level: accessLevel, contentType: "image/png" })
+      .then((result) =>
+        setImageList(
+          result.filter((file) => {
+            if (!file.key.match(/.jpg/ == false)) return file;
+          })
+        )
+      )
+      .catch((err) => console.log(err));
+    // console.log(Auth);
+  }, [accessLevel]);
+
+  console.log("access level", accessLevel);
 
   const addRecipe = async () => {
     try {
@@ -88,13 +110,43 @@ function App() {
     setFormState({ ...formState, [key]: value });
   };
 
+  console.log("textlist", textList, "image list", imageList);
+
   return (
     <div className="App">
       <header className="App-header">
         <AmplifySignOut />
         <div>
-          <S3ImageUpload />
+          <S3ImageUpload accessLevel={accessLevel} />
           <br />
+          <br />
+          <br />
+          <div>
+            {textList.map((txt) => (
+              <S3Text key={txt.key} textKey={txt.key} level={accessLevel} />
+            ))}
+          </div>
+          <button
+            onClick={(e) => {
+              if (accessLevel === "public") setAccessLevel("private");
+              else if (accessLevel === "private") setAccessLevel("public");
+            }}
+          >
+            {accessLevel}
+          </button>
+          <br />
+          <br />
+          <div>
+            {imageList.map((img) => (
+              <S3Image
+                key={img.key}
+                imgKey={img.key}
+                level={accessLevel}
+                theme={{ photoImg: { width: 300 } }}
+              />
+            ))}
+          </div>
+
           <label htmlFor="name">Recipe Title:</label>
           <br />
           <input
