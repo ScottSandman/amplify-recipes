@@ -10,6 +10,11 @@
             "StackName": "amplify-amplifyrecipes-recipes-93732",
             "StackId": "arn:aws:cloudformation:us-east-1:063455644107:stack/amplify-amplifyrecipes-recipes-93732/c0db6570-8f9e-11ea-8b1a-0e2d599e16c7",
             "AmplifyAppId": "d32gvyrzrfnq59"
+        },
+        "categories": {
+            "auth": {
+                "amplifyrecipes23a6af95": {}
+            }
         }
     }
 }
