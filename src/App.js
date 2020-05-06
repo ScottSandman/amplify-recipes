@@ -6,6 +6,8 @@ import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 import { S3Text, S3Image } from "aws-amplify-react";
 
 import "./App.css";
+import RecipeCard from "./RecipeCard";
+import RecipeInputs from "./RecipeInputs";
 
 const initialState = {
   name: "",
@@ -118,14 +120,11 @@ function App() {
         <AmplifySignOut />
         <div>
           <S3ImageUpload accessLevel={accessLevel} />
-          <br />
-          <br />
-          <br />
-          <div>
+          {/* <div>
             {textList.map((txt) => (
               <S3Text key={txt.key} textKey={txt.key} level={accessLevel} />
             ))}
-          </div>
+          </div> */}
           <button
             onClick={(e) => {
               if (accessLevel === "public") setAccessLevel("private");
@@ -134,8 +133,7 @@ function App() {
           >
             {accessLevel}
           </button>
-          <br />
-          <br />
+          {/* 
           <div>
             {imageList.map((img) => (
               <S3Image
@@ -145,62 +143,25 @@ function App() {
                 theme={{ photoImg: { width: 300 } }}
               />
             ))}
-          </div>
+          </div> */}
 
-          <label htmlFor="name">Recipe Title:</label>
-          <br />
-          <input
-            type="text"
-            id="name"
-            onChange={(e) => setInput("name", e.target.value)}
-            value={formState.name}
+          <RecipeInputs
+            formState={formState}
+            setInput={setInput}
+            addRecipe={addRecipe}
           />
-          <br />
-          <label htmlFor="instructions">Recipe Instructions:</label>
-          <br />
-          <textarea
-            rows="10"
-            id="instructions"
-            onChange={(e) => setInput("instructions", e.target.value)}
-            value={formState.instructions}
-          ></textarea>
-          <br />
-          <label htmlFor="prepTime">Prep Time:</label>
-          <br />
-          <input
-            type="text"
-            id="prepTime"
-            onChange={(e) => setInput("prepTime", e.target.value)}
-            value={formState.prepTime}
-          />
-          <br />
-          <label htmlFor="cookTime">Cooking Time:</label>
-          <br />
-          <input
-            type="text"
-            id="cookTime"
-            onChange={(e) => setInput("cookTime", e.target.value)}
-            value={formState.cookTime}
-          />
-          <br />
-          <button type="submit" onClick={addRecipe}>
-            Add Recipe
-          </button>
         </div>
         <div>
           <h5>Enjoy one of your recipes:</h5>
           {recipesList.map((recipe) => {
             return recipe ? (
-              <>
-                <div>
-                  {recipe.name}
-                  <ul>
-                    <li>Prep Time: {recipe.prepTime} mins</li>
-                    <li>Cook Time: {recipe.cookTime} mins</li>
-                    <li>{recipe.instructions.split(";\n").join(". ")}</li>
-                  </ul>
-                </div>
-              </>
+              <div style={{ marginBottom: 20 }}>
+                <RecipeCard
+                  recipe={recipe}
+                  imageList={imageList}
+                  accessLevel={accessLevel}
+                />
+              </div>
             ) : (
               "You haven't added any recipes"
             );
