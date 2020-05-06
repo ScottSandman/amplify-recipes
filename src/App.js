@@ -1,24 +1,61 @@
 import React, { useState, useEffect } from "react";
-import { API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation, Storage, Auth } from "aws-amplify";
 import { createRecipe } from "./graphql/mutations";
 import { getRecipe, listRecipes } from "./graphql/queries";
-import { withAuthenticator } from "@aws-amplify/ui-react";
+import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
+import { S3Text } from "aws-amplify-react";
 
 import "./App.css";
 
 const initialState = {
   name: "",
   instructions: "",
-  prepTime: null,
-  cookTime: null,
+  prepTime: "",
+  cookTime: "",
+};
+
+// Storage.put("test.txt", "put text in private folder", {
+//   level: "private",
+//   contentType: "text/plain",
+// })
+//   .then((result) => console.log(result))
+//   .catch((err) => console.log(err));
+
+const S3ImageUpload = () => {
+  const [image, setImage] = useState("");
+
+  function onClick() {
+    const file = image;
+    Storage.put(image.name, file, {
+      level: "private",
+      contentType: "image/png",
+    })
+      .then((result) => console.log(result))
+      .catch((err) => console.log(err));
+  }
+  return (
+    <>
+      <input
+        type="file"
+        accept="image/png"
+        onChange={(e) => {
+          console.log(e.target.files[0].name);
+          setImage(e.target.files[0]);
+        }}
+      />
+      <button onClick={() => onClick()}>Upload Photo</button>
+    </>
+  );
 };
 
 function App() {
   const [formState, setFormState] = useState(initialState);
   const [recipesList, setRecipesList] = useState([]);
+  const [textList, setTextList] = useState([]);
 
   useEffect(() => {
     fetchRecipes();
+    console.log(Auth);
   }, []);
 
   const addRecipe = async () => {
@@ -54,13 +91,17 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <AmplifySignOut />
         <div>
+          <S3ImageUpload />
+          <br />
           <label htmlFor="name">Recipe Title:</label>
           <br />
           <input
             type="text"
             id="name"
             onChange={(e) => setInput("name", e.target.value)}
+            value={formState.name}
           />
           <br />
           <label htmlFor="instructions">Recipe Instructions:</label>
@@ -69,6 +110,7 @@ function App() {
             rows="10"
             id="instructions"
             onChange={(e) => setInput("instructions", e.target.value)}
+            value={formState.instructions}
           ></textarea>
           <br />
           <label htmlFor="prepTime">Prep Time:</label>
@@ -77,6 +119,7 @@ function App() {
             type="text"
             id="prepTime"
             onChange={(e) => setInput("prepTime", e.target.value)}
+            value={formState.prepTime}
           />
           <br />
           <label htmlFor="cookTime">Cooking Time:</label>
@@ -85,6 +128,7 @@ function App() {
             type="text"
             id="cookTime"
             onChange={(e) => setInput("cookTime", e.target.value)}
+            value={formState.cookTime}
           />
           <br />
           <button type="submit" onClick={addRecipe}>
@@ -92,10 +136,10 @@ function App() {
           </button>
         </div>
         <div>
+          <h5>Enjoy one of your recipes:</h5>
           {recipesList.map((recipe) => {
             return recipe ? (
               <>
-                <h5>Enjoy one of your recipes:</h5>
                 <div>
                   {recipe.name}
                   <ul>
