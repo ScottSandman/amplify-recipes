@@ -164,17 +164,6 @@ function App() {
             {accessLevel}
           </button>
 
-          <div>
-            {/* {imageList.map((img) => (
-              <S3Image
-                key={img.key}
-                imgKey={img.key}
-                level={accessLevel}
-                theme={{ photoImg: { width: 300 } }}
-              />
-            ))} */}
-          </div>
-
           <RecipeInputs
             formState={formState}
             setInput={setInput}

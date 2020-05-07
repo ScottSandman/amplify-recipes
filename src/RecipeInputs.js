@@ -14,12 +14,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RecipeInputs({ formState, setInput, addRecipe }) {
   const classes = useStyles();
-  //   const [value, setValue] = React.useState('Controlled');
-
-  //   const handleChange = (event) => {
-  //     setValue(event.target.value);
-  //   };
-
   return (
     <div className={classes.root}>
       <div style={{ border: "2px solid white" }}>
@@ -75,15 +69,21 @@ export default function RecipeInputs({ formState, setInput, addRecipe }) {
         />
       </div>
       <input
+        id="pic-upload"
         type="file"
         accept="image/png"
         onChange={(e) => {
-          // console.log("New Pic + name", e.target.files[0]);
           setInput("recipePic", e.target.files[0]);
         }}
-        value={formState.recipePic}
       />
-      <button onClick={() => addRecipe()}>Add Recipe</button>
+      <button
+        onClick={() => {
+          addRecipe();
+          document.getElementById("pic-upload").value = null;
+        }}
+      >
+        Add Recipe
+      </button>
     </div>
   );
 }
