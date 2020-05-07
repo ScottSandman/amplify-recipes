@@ -47,7 +47,7 @@ export default function RecipeCard({ recipe, imageList, accessLevel }) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(imageList[0]);
+  // console.log(imageList[0]);
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -60,8 +60,12 @@ export default function RecipeCard({ recipe, imageList, accessLevel }) {
       />
       {imageList[0] && (
         <S3Image
-          key={imageList[0].key}
-          imgKey={imageList[0].key}
+          key={
+            recipe.recipePic ? "images/" + recipe.recipePic : imageList[0].key
+          }
+          imgKey={
+            recipe.recipePic ? "images/" + recipe.recipePic : imageList[0].key
+          }
           level={accessLevel}
         />
       )}

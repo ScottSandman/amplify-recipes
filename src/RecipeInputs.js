@@ -14,14 +14,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RecipeInputs({ formState, setInput, addRecipe }) {
   const classes = useStyles();
-  //   const [value, setValue] = React.useState('Controlled');
-
-  //   const handleChange = (event) => {
-  //     setValue(event.target.value);
-  //   };
-
   return (
-    <form className={classes.root} noValidate autoComplete="off">
+    <div className={classes.root}>
       <div style={{ border: "2px solid white" }}>
         <TextField
           id="outlined-multiline-flexible"
@@ -74,7 +68,22 @@ export default function RecipeInputs({ formState, setInput, addRecipe }) {
           value={formState.instructions}
         />
       </div>
-      <button onClick={() => addRecipe()}>Add Recipe</button>
-    </form>
+      <input
+        id="pic-upload"
+        type="file"
+        accept="image/png"
+        onChange={(e) => {
+          setInput("recipePic", e.target.files[0]);
+        }}
+      />
+      <button
+        onClick={() => {
+          addRecipe();
+          document.getElementById("pic-upload").value = null;
+        }}
+      >
+        Add Recipe
+      </button>
+    </div>
   );
 }

@@ -1,7 +1,8 @@
-type Recipe @model {
+type Recipe @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
   instructions: String
   prepTime: Float
   cookTime: Float
+  recipePic: String
 }
