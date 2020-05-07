@@ -16,5 +16,23 @@
                 "amplifyrecipes23a6af95": {}
             }
         }
+    },
+    "recipejrs": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-amplifyrecipes-recipejrs-92653-authRole",
+            "UnauthRoleArn": "arn:aws:iam::226507624813:role/amplify-amplifyrecipes-recipejrs-92653-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::226507624813:role/amplify-amplifyrecipes-recipejrs-92653-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-amplifyrecipes-recipejrs-92653-deployment",
+            "UnauthRoleName": "amplify-amplifyrecipes-recipejrs-92653-unauthRole",
+            "StackName": "amplify-amplifyrecipes-recipejrs-92653",
+            "StackId": "arn:aws:cloudformation:us-east-1:226507624813:stack/amplify-amplifyrecipes-recipejrs-92653/69e487b0-9066-11ea-a4f0-0a7396047ff3",
+            "AmplifyAppId": "d3pyavv7ov2p0k"
+        },
+        "categories": {
+            "auth": {
+                "amplifyrecipes23a6af95": {}
+            }
+        }
     }
 }

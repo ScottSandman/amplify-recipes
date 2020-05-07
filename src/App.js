@@ -4,10 +4,13 @@ import { createRecipe } from "./graphql/mutations";
 import { getRecipe, listRecipes } from "./graphql/queries";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 import { S3Text, S3Image } from "aws-amplify-react";
+import { v4 as uuidv4 } from "uuid";
 
 import "./App.css";
 import RecipeCard from "./RecipeCard";
 import RecipeInputs from "./RecipeInputs";
+
+// console.log("HowdyUUID!", uuidv4());
 
 const initialState = {
   name: "",
@@ -27,8 +30,9 @@ const S3ImageUpload = ({ accessLevel }) => {
   const [image, setImage] = useState("");
 
   function onClick() {
+    const uuid = uuidv4();
     const file = image;
-    Storage.put("images/" + image.name, file, {
+    Storage.put("images/" + uuid, file, {
       level: accessLevel,
       contentType: "image/png",
     })
@@ -133,7 +137,7 @@ function App() {
           >
             {accessLevel}
           </button>
-          {/* 
+
           <div>
             {imageList.map((img) => (
               <S3Image
@@ -143,7 +147,7 @@ function App() {
                 theme={{ photoImg: { width: 300 } }}
               />
             ))}
-          </div> */}
+          </div>
 
           <RecipeInputs
             formState={formState}

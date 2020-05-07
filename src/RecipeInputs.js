@@ -21,7 +21,7 @@ export default function RecipeInputs({ formState, setInput, addRecipe }) {
   //   };
 
   return (
-    <form className={classes.root} noValidate autoComplete="off">
+    <div className={classes.root}>
       <div style={{ border: "2px solid white" }}>
         <TextField
           id="outlined-multiline-flexible"
@@ -30,7 +30,7 @@ export default function RecipeInputs({ formState, setInput, addRecipe }) {
           rowsMax={4}
           onChange={(e) => setInput("name", e.target.value)}
           variant="outlined"
-          value={formState.name}
+          // value={formState.name}
         />
       </div>
       <div
@@ -75,6 +75,6 @@ export default function RecipeInputs({ formState, setInput, addRecipe }) {
         />
       </div>
       <button onClick={() => addRecipe()}>Add Recipe</button>
-    </form>
+    </div>
   );
 }
