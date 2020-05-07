@@ -9,6 +9,7 @@ export const getRecipe = /* GraphQL */ `
       instructions
       prepTime
       cookTime
+      recipePic
     }
   }
 `;
@@ -25,6 +26,7 @@ export const listRecipes = /* GraphQL */ `
         instructions
         prepTime
         cookTime
+        recipePic
       }
       nextToken
     }

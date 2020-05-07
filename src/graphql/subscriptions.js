@@ -9,6 +9,7 @@ export const onCreateRecipe = /* GraphQL */ `
       instructions
       prepTime
       cookTime
+      recipePic
     }
   }
 `;
@@ -20,6 +21,7 @@ export const onUpdateRecipe = /* GraphQL */ `
       instructions
       prepTime
       cookTime
+      recipePic
     }
   }
 `;
@@ -31,6 +33,7 @@ export const onDeleteRecipe = /* GraphQL */ `
       instructions
       prepTime
       cookTime
+      recipePic
     }
   }
 `;

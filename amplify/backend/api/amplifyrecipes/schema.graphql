@@ -4,4 +4,5 @@ type Recipe @model {
   instructions: String
   prepTime: Float
   cookTime: Float
+  recipePic: String
 }
