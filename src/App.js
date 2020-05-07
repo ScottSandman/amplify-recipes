@@ -52,8 +52,6 @@ function App() {
     // console.log(Auth);
   }, [accessLevel]);
 
-  // console.log("access level", accessLevel);
-
   //  =====Pulled into addRecipe=====
   // function submitPhoto() {
   //   const uuid = uuidv4() + ".png";
