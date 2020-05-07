@@ -10,8 +10,6 @@ import "./App.css";
 import RecipeCard from "./RecipeCard";
 import RecipeInputs from "./RecipeInputs";
 
-// console.log("HowdyUUID!", uuidv4());
-
 const initialState = {
   name: "",
   instructions: "",
@@ -30,8 +28,9 @@ const S3ImageUpload = ({ accessLevel }) => {
   const [image, setImage] = useState("");
 
   function onClick() {
-    const uuid = uuidv4();
+    const uuid = uuidv4() + ".png";
     const file = image;
+    console.log("HowdyUUID!", uuid);
     Storage.put("images/" + uuid, file, {
       level: accessLevel,
       contentType: "image/png",
