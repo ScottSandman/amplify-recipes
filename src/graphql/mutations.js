@@ -13,6 +13,7 @@ export const createRecipe = /* GraphQL */ `
       prepTime
       cookTime
       recipePic
+      owner
     }
   }
 `;
@@ -28,6 +29,7 @@ export const updateRecipe = /* GraphQL */ `
       prepTime
       cookTime
       recipePic
+      owner
     }
   }
 `;
@@ -43,6 +45,7 @@ export const deleteRecipe = /* GraphQL */ `
       prepTime
       cookTime
       recipePic
+      owner
     }
   }
 `;
