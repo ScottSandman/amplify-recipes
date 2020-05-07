@@ -47,7 +47,7 @@ export default function RecipeCard({ recipe, imageList, accessLevel }) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(imageList[0]);
+  // console.log(imageList[0]);
   return (
     <Card className={classes.root}>
       <CardHeader

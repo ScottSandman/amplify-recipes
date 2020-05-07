@@ -30,7 +30,7 @@ export default function RecipeInputs({ formState, setInput, addRecipe }) {
           rowsMax={4}
           onChange={(e) => setInput("name", e.target.value)}
           variant="outlined"
-          // value={formState.name}
+          value={formState.name}
         />
       </div>
       <div
@@ -74,6 +74,15 @@ export default function RecipeInputs({ formState, setInput, addRecipe }) {
           value={formState.instructions}
         />
       </div>
+      <input
+        type="file"
+        accept="image/png"
+        onChange={(e) => {
+          // console.log("New Pic + name", e.target.files[0]);
+          setInput("recipePic", e.target.files[0]);
+        }}
+        value={formState.recipePic}
+      />
       <button onClick={() => addRecipe()}>Add Recipe</button>
     </div>
   );
