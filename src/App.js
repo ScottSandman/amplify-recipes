@@ -15,7 +15,7 @@ const initialState = {
   instructions: "",
   prepTime: "",
   cookTime: "",
-  recipePic: "1c5c92b2-fddc-42e4-be0c-e5df521ff0e3.png",
+  recipePic: "95dfa94a-c468-451a-bb93-b4bf647b9dc3.png",
 };
 
 // Storage.put("test.txt", "put text in private folder", {
