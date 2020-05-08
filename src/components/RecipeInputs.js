@@ -16,7 +16,7 @@ export default function RecipeInputs({ formState, setInput, addRecipe }) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <div style={{ border: "2px solid white" }}>
+      <div>
         <TextField
           id="outlined-multiline-flexible"
           label="Recipe Name"
@@ -31,8 +31,8 @@ export default function RecipeInputs({ formState, setInput, addRecipe }) {
         style={{
           display: "flex",
           flexDirection: "row",
-          width: 400,
-          border: "2px solid white",
+          justifyContent: "center",
+          width: "100vw",
         }}
       >
         <TextField

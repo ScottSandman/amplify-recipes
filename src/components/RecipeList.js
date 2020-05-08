@@ -3,7 +3,13 @@ import RecipeCard from "./RecipeCard";
 
 export default function RecipeList({ recipesList, imageList, accessLevel }) {
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <h5>Enjoy one of your recipes:</h5>
       {recipesList.map((recipe) => {
         return recipe ? (

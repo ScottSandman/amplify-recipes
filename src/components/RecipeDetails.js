@@ -20,7 +20,7 @@ import { S3Image } from "aws-amplify-react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    width: 450,
   },
   media: {
     height: 0,
@@ -46,38 +46,33 @@ export default function RecipeDetails({ recipesList, id, accessLevel }) {
   const recipe = recipesList.filter((recipe) => recipe.id === id)[0];
   console.log("Recipe Details", recipe);
   return recipe ? (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            {recipe.name.slice(0, 1)}
-          </Avatar>
-        }
-        title={recipe.name}
-      />
-      <S3Image
-        key={recipe.recipePic}
-        imgKey={recipe.recipePic}
-        level={accessLevel}
-        theme={{ photoImg: { width: 345 } }}
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {recipe.prepTime}
-          {" mins"}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {recipe.cookTime}
-          {" mins"}
-        </Typography>
-        <Typography paragraph>Instructions:</Typography>
-        {recipe.instructions.split(";").map((el, index) => (
-          <Typography key={index} paragraph>
-            {el}
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <Card className={classes.root}>
+        <CardHeader title={recipe.name} />
+        <S3Image
+          key={recipe.recipePic}
+          imgKey={recipe.recipePic}
+          level={accessLevel}
+          theme={{ photoImg: { width: 345 } }}
+        />
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {recipe.prepTime}
+            {" mins"}
           </Typography>
-        ))}
-      </CardContent>
-    </Card>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {recipe.cookTime}
+            {" mins"}
+          </Typography>
+          <Typography paragraph>Instructions:</Typography>
+          {recipe.instructions.split(";").map((el, index) => (
+            <Typography key={index} paragraph>
+              {el}
+            </Typography>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
   ) : (
     <></>
   );

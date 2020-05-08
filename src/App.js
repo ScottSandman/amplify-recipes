@@ -111,7 +111,12 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <AmplifySignOut />
+        <div>
+          <Link to="CreateRecipe">Create Recipe</Link>
+        </div>
+        <div>
+          <AmplifySignOut />
+        </div>
       </header>
       <Router>
         <RecipeList
