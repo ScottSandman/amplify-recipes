@@ -10,8 +10,6 @@ import "./App.css";
 import RecipeCard from "./RecipeCard";
 import RecipeInputs from "./RecipeInputs";
 
-// console.log("auth", Auth);
-
 const initialState = {
   name: "",
   instructions: "",
@@ -20,27 +18,16 @@ const initialState = {
   recipePic: undefined,
 };
 
-// Storage.put("test.txt", "put text in private folder", {
-//   level: "private",
-//   contentType: "text/plain",
-// })
-//   .then((result) => console.log(result))
-//   .catch((err) => console.log(err));
-
-// const S3ImageUpload = ({ accessLevel }) => {
-//   const [image, setImage] = useState("");
-
 function App() {
   const [formState, setFormState] = useState(initialState);
   const [recipesList, setRecipesList] = useState([]);
-  const [textList, setTextList] = useState([]);
   const [imageList, setImageList] = useState([]);
 
   const accessLevel = "private"; //only applies to S3 buckets
 
   useEffect(() => {
     fetchRecipes();
-    Storage.list("images/", { level: accessLevel, contentType: "image/png" })
+    Storage.list("", { level: accessLevel, contentType: "image/png" })
       .then((result) =>
         setImageList(
           result.filter((file) => {
@@ -52,21 +39,6 @@ function App() {
     // console.log(Auth);
   }, [accessLevel]);
 
-  //  =====Pulled into addRecipe=====
-  // function submitPhoto() {
-  //   const uuid = uuidv4() + ".png";
-  //   const file = formState.recipePic;
-  //   console.log("HowdyUUID!", uuid);
-  //   setFormState({ ...formState, recipePic: uuid });
-  //   Storage.put("images/" + uuid, file, {
-  //     level: accessLevel,
-  //     contentType: "image/png",
-  //   })
-  //     .then((result) => console.log(result))
-  //     .catch((err) => console.log(err));
-  //   console.log("Lizard formState!", formState);
-  // }
-
   //set subscription appsync to fetch from bucket, then publish recipe
 
   const addRecipe = async () => {
@@ -74,15 +46,14 @@ function App() {
       if (!formState.name) return;
       const uuid = uuidv4() + ".png";
       const file = formState.recipePic;
-      // console.log("HowdyUUID!", uuid);
-      // setFormState({ ...formState, recipePic: uuid });
-      Storage.put("images/" + uuid, file, {
+      const imageResponse = await Storage.put("images/" + uuid, file, {
         level: accessLevel,
         contentType: "image/png",
-      })
-        .then((result) => console.log(result))
-        .catch((err) => console.log(err));
-      const recipe = { ...formState, recipePic: uuid };
+      });
+      // .then((result) => console.log(result))
+      // .catch((err) => console.log(err));
+      console.log("image response", imageResponse);
+      const recipe = { ...formState, recipePic: imageResponse.key };
       setRecipesList([...recipesList, recipe]);
       setFormState(initialState);
       const response = await API.graphql(
@@ -116,21 +87,6 @@ function App() {
       <header className="App-header">
         <AmplifySignOut />
         <div>
-          {/* <S3ImageUpload accessLevel={accessLevel} /> */}
-          {/* <div>
-            {textList.map((txt) => (
-              <S3Text key={txt.key} textKey={txt.key} level={accessLevel} />
-            ))}
-          </div> */}
-          {/* <button
-            onClick={(e) => {
-              if (accessLevel === "public") setAccessLevel("private");
-              else if (accessLevel === "private") setAccessLevel("public");
-            }}
-          >
-            {accessLevel}
-          </button> */}
-
           <RecipeInputs
             formState={formState}
             setInput={setInput}
@@ -141,7 +97,7 @@ function App() {
           <h5>Enjoy one of your recipes:</h5>
           {recipesList.map((recipe) => {
             return recipe ? (
-              <div style={{ marginBottom: 20 }}>
+              <div style={{ marginBottom: 20 }} key={recipe.id}>
                 <RecipeCard
                   recipe={recipe}
                   imageList={imageList}
