@@ -63,6 +63,7 @@ export default function RecipeCard({ recipe, imageList, accessLevel }) {
           key={recipe.recipePic ? recipe.recipePic : imageList[0].key}
           imgKey={recipe.recipePic ? recipe.recipePic : imageList[0].key}
           level={accessLevel}
+          theme={{ photoImg: { width: 345 } }}
         />
       )}
       <CardContent>

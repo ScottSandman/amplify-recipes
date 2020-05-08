@@ -5,6 +5,7 @@ import { getRecipe, listRecipes } from "./graphql/queries";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 import { S3Text, S3Image } from "aws-amplify-react";
 import { v4 as uuidv4 } from "uuid";
+import { onCreateRecipe } from "./graphql/subscriptions";
 
 import "./App.css";
 import RecipeCard from "./RecipeCard";
@@ -17,6 +18,12 @@ const initialState = {
   cookTime: "",
   recipePic: undefined,
 };
+
+// subscription.unsubscribe();
+
+// setTimeout(() => {
+//   subscription.unsubscribe();
+// }, 100000);
 
 function App() {
   const [formState, setFormState] = useState(initialState);
@@ -39,11 +46,11 @@ function App() {
     // console.log(Auth);
   }, [accessLevel]);
 
-  //set subscription appsync to fetch from bucket, then publish recipe
-
   const addRecipe = async () => {
     try {
       if (!formState.name) return;
+      const subscription = await subscribe();
+      // subscription.unsubscribe();
       const uuid = uuidv4() + ".png";
       const file = formState.recipePic;
       const imageResponse = await Storage.put("images/" + uuid, file, {
@@ -54,7 +61,7 @@ function App() {
       // .catch((err) => console.log(err));
       console.log("image response", imageResponse);
       const recipe = { ...formState, recipePic: imageResponse.key };
-      setRecipesList([...recipesList, recipe]);
+      // setRecipesList([...recipesList, recipe]);
       setFormState(initialState);
       const response = await API.graphql(
         graphqlOperation(createRecipe, { input: recipe })
@@ -64,6 +71,29 @@ function App() {
       console.log(error);
     }
   };
+
+  async function subscribe() {
+    try {
+      console.log("auth", Auth, "currentAuthUser", Auth.user.username);
+      const subscription = await API.graphql(
+        graphqlOperation(onCreateRecipe, {
+          owner: Auth.user.username,
+        })
+      ).subscribe({
+        next: (recipeData) => {
+          console.log("recipeData", recipeData);
+          setRecipesList([
+            ...recipesList,
+            recipeData.value.data.onCreateRecipe,
+          ]);
+        },
+      });
+
+      return subscription;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const fetchRecipes = async () => {
     try {
